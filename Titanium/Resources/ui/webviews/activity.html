@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recent - PonchoApp</title>  
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width">
+  <style type="text/css">
+		html, body, section{
+			position: relative;
+			top:0;
+			left:0;
+		}
+  </style>
+</head>
+<body>
+
+<div id="main">
+	
+</div>
+
+<script id="messageListTemplate" type="text/template">
+<% if(messages.length){ %> 
+	<section id="scroll" class="deals">
+		<div>
+			<% _.each(messages, function(message){ %>
+				<article>
+					<a onclick="Titanium.App.fireEvent('openURL', { url: '<%= message.object.sourceURL %>'});" class="button">View Details</a>
+					<p><%= message.object.summary %></p>
+					<small>Received: <time datetime=<%= message.localtime %>><%= message.displayDate %></time></small>
+				</article>
+
+			<% }); %>
+		<div>
+	</section>
+<% } else { %>
+	<section id="scroll" class="no-deals">
+		<div>
+			<p>You haven&rsquo;t received any alerts yet. When we detect inclement weather near you we&rsquo;ll send you a notification.</p> 
+		</div>
+	</section>
+<% } %>
+</script>
+
+<script src="js/vendor/underscore-min.js.rw"></script>
+<script src="js/vendor/jquery-1.7.2.min.js.rw"></script>
+<script src="js/vendor/backbone-min.js.rw"></script>
+<script src="js/vendor/backbone.localStorage-min.js.rw"></script>
+<script src="js/vendor/iscroll.js.rw"></script>
+<script src="js/app.js.rw"></script>
+
+</body>
+</html>
