@@ -10,15 +10,15 @@ var tableView,
 	  	message: (Ti.Platform.osname === "android") ? "Loading Categories" : null
 	  });
 
-function loadDeals() {
-	Ti.API.info("loading new deals");
+function loadItems() {
+	Ti.API.info("loading new items");
 	geoloqi.session.getRequest("timeline/messages", {
 		limit: "30"
 	} , {
 		onSuccess: function(data){
 			Ti.API.info("timelime/messages Success");
 			Ti.API.info(data);
-			cacheDeals(data.response);
+			cacheItems(data.response);
 			updateView(data.response);
 		},
 		onComplete: function(data){
@@ -32,7 +32,7 @@ function loadDeals() {
 	});
 }
 
-function openDeal(e){
+function openItem(e){
 	Ti.API.info(e);
 }
 
@@ -52,7 +52,7 @@ function updateView(data){
 					hasDetail: true,
 					height: 'auto',
 					layout: 'vertical',
-					dealUrl: message.object.sourceURL
+					itemUrl: message.object.sourceURL
 				});
 		
 		    var label = Ti.UI.createLabel({
@@ -101,7 +101,7 @@ function createTableView(rows){
 	tableView = Ti.UI.createTableView(rows);
 	
 	tableView.addEventListener("click", function(e){
-		Ti.App.fireEvent("openURL", {url: e.rowData.dealUrl })
+		Ti.App.fireEvent("openURL", {url: e.rowData.itemUrl })
 	});
 	
 	activityWindow.add(tableView);
@@ -119,7 +119,7 @@ function hideLoadIndicator(){
 	}
 }
 
-function cacheDeals(data){
+function cacheItems(data){
 	Ti.App.Properties.setString("messageHistory", JSON.stringify(data));
 }
 
@@ -138,16 +138,10 @@ function showNoMessages(){
 			layout: "vertical"
 		});
 		noMessagesView.add(Ti.UI.createLabel({
-			text:"You haven't picked up any deals yet. When you get near a deal we'll send you a notification.",
+			text:"You haven't received any alerts yet. We'll send you a notification when we notice interesting weather near you.",
 			font: {fontSize:24},
 			textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 			color:"#444"
-		}));
-		noMessagesView.add(Ti.UI.createLabel({
-			text:"Try subscribing to more categories.",
-			font: {fontSize:32, fontWeight: "bold"},
-			color: "#137fae",
-			textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 		}));
 		hideLoadIndicator();
 		activityWindow.add(noMessagesView);
@@ -159,11 +153,11 @@ function init(){
 	if(Ti.App.Properties.hasProperty("messageHistory")){
 		Ti.API.info("found cached messages");
 		updateView(JSON.parse(Ti.App.Properties.getString("messageHistory")));
-		loadDeals();
+		loadItems();
 	} else if (geoloqi.session.getAccessToken()){
 		Ti.API.info("no cached messages, getting new messages");
 		showLoadIndicator();
-		loadDeals();
+		loadItems();
 	} else {
 		Ti.API.info("no session found");
 		showNoMessages();
@@ -173,17 +167,18 @@ function init(){
 activityWindow.add(activityIndicator);
 
 Ti.API.info("Listen");
-
-if(geoloqi.session.getAccessToken()){
-	init();
-} else {
-	Ti.App.addEventListener("geoloqi:ready", function(e){
+Ti.App.addEventListener("geoloqi:ready", function(e){
+	if(geoloqi.session && geoloqi.session.getAccessToken()){
 		init();
-	});
-}
+	} else {
+		Ti.App.addEventListener("geoloqi:ready", function(e){
+			init();
+		});
+	}
+});
 
-Ti.App.addEventListener("refreshDeals", function(e){
-	loadDeals();
+Ti.App.addEventListener("refreshItems", function(e){
+	loadItems();
 });
 
 // Platform specific refresh button
@@ -193,7 +188,7 @@ if(Ti.Platform.osname === "iphone"){
 	});
 
 	refresh.addEventListener("click", function(e){
-		loadDeals();
+		loadItems();
 	});
 	
 	activityWindow.setRightNavButton(refresh);
@@ -209,7 +204,7 @@ if(Ti.Platform.osname === "iphone"){
 		// Refresh
 		menuItem = menu.add({ title: "Refresh" });
 		menuItem.addEventListener("click", function(e) {
-			loadDeals();
+			loadItems();
 		});
 		
 		// Disable location
