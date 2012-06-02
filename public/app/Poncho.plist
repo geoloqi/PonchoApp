@@ -11,7 +11,7 @@
           <key>kind</key>
           <string>software-package</string>
           <key>url</key>
-          <string>http://ponchoapp.com/app/PonchoApp.ipa</string>
+          <string>http://loqi.me/poncho/PonchoApp.ipa</string>
         </dict>
         <dict>
           <key>kind</key>
