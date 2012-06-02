@@ -3,7 +3,7 @@ require 'bundler/setup'
 Bundler.require
 
 def darksky
-  @darksky ||= Darksky::API.new(Config.darksky_key)
+  @darksky ||= Darksky::API.new(AppConfig.darksky_key)
 end
 
 def darksky_forecast(lat, lng)
@@ -43,16 +43,16 @@ end
 
 configure do
   if File.exist?('./config.yml')
-    Config = Hashie::Mash.new YAML.load_file('./config.yml')
+    AppConfig = Hashie::Mash.new YAML.load_file('./config.yml')
   else
-    Config = Hashie::Mash.new({
+    AppConfig = Hashie::Mash.new({
       geoloqi_app_id:     ENV['GEOLOQI_APP_ID'],
       geoloqi_app_secret: ENV['GEOLOQI_APP_SECRET'],
       darksky_key:        ENV['DARKSKY_KEY']
     })
   end
 
-  Geoloqi.config client_id: Config.geoloqi_app_id, client_secret: Config.geoloqi_app_secret, use_hashie_mash: true
+  Geoloqi.config client_id: AppConfig.geoloqi_app_id, client_secret: AppConfig.geoloqi_app_secret, use_hashie_mash: true
 
   $geoloqi_app_token = Geoloqi::Session.new.application_access_token
   load_geoloqi_users
