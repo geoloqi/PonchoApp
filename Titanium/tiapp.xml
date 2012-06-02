@@ -8,11 +8,11 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>2.0.1.GA2</sdk-version>
-    <id>com.ponchoapp.titanium</id>
-    <name>DinoDeals</name>
+    <id>com.geoloqi.ponchoapp</id>
+    <name>Poncho</name>
     <version>1.0.0</version>
     <publisher>Geoloqi, Inc.</publisher>
-    <url>https://geoloqi.com</url>
+    <url>http://ponchoapp.com</url>
     <description>not specified</description>
     <copyright>2012 by Geoloqi, Inc.</copyright>
     <icon>appicon.png</icon>
@@ -23,7 +23,7 @@
     <statusbar-hidden>false</statusbar-hidden>
     <navbar-hidden>true</navbar-hidden>
     <analytics>true</analytics>
-    <guid>05d47009-d2fe-4165-8891-19aa55bda510</guid>
+    <guid>05d47009-d2fe-4165-8891-19aa55bda511</guid>
     <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">
@@ -41,8 +41,8 @@
             <uses-sdk android:minSdkVersion="7"/>
             <!-- NOTE: These permissions are required if you wish to enable C2DM support in the Geoloqi SDK. -->
             <permission
-                android:name="com.geoloqi.deals.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
-            <uses-permission android:name="com.geoloqi.deals.permission.C2D_MESSAGE"/>
+                android:name="com.geoloqi.ponchoapp.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+            <uses-permission android:name="com.geoloqi.ponchoapp.permission.C2D_MESSAGE"/>
             <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
             <application>
                 <!-- NOTE: This receiver is required if you wish to enable C2DM support in the Geoloqi SDK. -->
@@ -51,7 +51,7 @@
                     <intent-filter>
                         <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                         <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                        <category android:name="com.geoloqi.deals"/>
+                        <category android:name="com.geoloqi.ponchoapp"/>
                     </intent-filter>
                 </receiver>
             </application>

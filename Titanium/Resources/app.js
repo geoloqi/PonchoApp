@@ -12,12 +12,12 @@ geoloqi.init({
   trackingProfile: "PASSIVE"
 },{
   onSuccess: function(){
+  	Ti.API.info("Session: "+geoloqi.session);
     Ti.API.info("Tracking Profile: " + geoloqi.tracker.getProfile());
     Ti.API.info("Access Token: " + geoloqi.session.getAccessToken());
     Ti.API.info("User ID: " + geoloqi.session.getUserId());
     Ti.API.info("Username: " + geoloqi.session.getUsername());
     Ti.API.info("Anonymous User?: " + geoloqi.session.isAnonymous());
-    Ti.API.info("Fire");
     Ti.App.fireEvent("geoloqi:ready");
     
     if (Ti.Platform.osname !== "android") {
@@ -112,7 +112,7 @@ var PonchoApp = {
   // create a window to hold a webview for recent activity
   PonchoApp.Windows.activity = Ti.UI.createWindow({
     url: "ui/windows/activity.js",
-    title: "Activity",
+    title: "Weather",
     barColor: "#15a6e5",
     backgroundColor:"#fff",
     Config: Config,
@@ -142,8 +142,8 @@ var PonchoApp = {
 
   // activity view tab
   PonchoApp.Tabs.activity = Ti.UI.createTab({
-    title: 'Activity',
-    icon: (Ti.Platform.osname === "android") ? Ti.App.Android.R.drawable.tabs_categories_drawable : '/images/tabs_categories.png',
+    title: 'Weather',
+    icon: (Ti.Platform.osname === "android") ? Ti.App.Android.R.drawable.tabs_categories_drawable : '/images/tabs_umbrella.png',
     window: PonchoApp.Windows.activity
   });
   PonchoApp.tabGroup.addTab(PonchoApp.Tabs.activity);
