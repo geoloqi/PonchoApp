@@ -73,3 +73,7 @@ end
 get '/' do
   'This is the Location Barometer service. You should not need to access it directly.'
 end
+
+get '/app' do
+  File.read('./public/app/index.html')
+end
