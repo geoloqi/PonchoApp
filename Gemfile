@@ -1,6 +1,10 @@
 source :rubygems
 gem 'sinatra'
 gem 'multi_json'
+gem 'hashie'
 gem 'oj'
 gem 'darksky'
 gem 'puma'
+gem 'rufus-scheduler', require: 'rufus/scheduler'
+gem 'pry'
+gem 'geoloqi'
