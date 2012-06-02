@@ -70,7 +70,7 @@ before do
 end
 
 get '/' do
-  'This is the Location Barometer service. You should not need to access it directly.'
+  erb :index
 end
 
 get '/app' do
