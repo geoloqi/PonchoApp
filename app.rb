@@ -20,22 +20,14 @@ def process_users
     l = Geoloqi::Session.new(access_token: $geoloqi_app_token).get 'location/last', user_id: user.user_id
     f = Hashie::Mash.new darksky_forecast(l.location.position.latitude, l.location.position.longitude)
 
-    f = Hashie::Mash.new({"currentTemp"=>61,
-     "currentSummary"=>"clear",
-     "hourSummary"=>"8 simultaneous hurricanes forever",
-     "isPrecipitating"=>false,
-     "minutesUntilChange"=>0,
-     "checkTimeout"=>1050})
-
-#    if user.extra.hour_summary.nil?
+    if user.extra.hour_summary.nil?
       Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: 'clear'}
-#    end
+    end
 
     if f.hourSummary != 'clear' && user.extra.hour_summary != f.hourSummary
       Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: f.hourSummary}
       Geoloqi::Session.new(access_token: $geoloqi_app_token).post 'message/send', user_id: user.user_id, text: f.hourSummary
     end
-
   end
 end
 
