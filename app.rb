@@ -26,7 +26,7 @@ def process_users
 
     if f.hourSummary != 'clear' && user.extra.hour_summary != f.hourSummary
       Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: f.hourSummary}
-      Geoloqi::Session.new.post 'message/send', user_id: user.user_id, text: user.extra.hour_summary
+      Geoloqi::Session.new(access_token: $geoloqi_app_token).post 'message/send', user_id: user.user_id, text: user.extra.hour_summary
     end
 
   end
