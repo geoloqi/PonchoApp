@@ -17,17 +17,21 @@ end
 
 def process_users
   $users.each do |user|
-    l = Geoloqi::Session.new(access_token: $geoloqi_app_token).get 'location/last', user_id: user.user_id
-    f = Hashie::Mash.new darksky_forecast(l.location.position.latitude, l.location.position.longitude)
+    begin
+      l = Geoloqi::Session.new(access_token: $geoloqi_app_token).get 'location/last', user_id: user.user_id
+      f = Hashie::Mash.new darksky_forecast(l.location.position.latitude, l.location.position.longitude)
 
-    if user.extra.hour_summary.nil?
-      Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: 'clear'}
-    end
+      if user.extra.hour_summary.nil?
+        Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: 'clear'}
+      end
 
-    if !f.hourSummary.nil? && !f.hourSummary.empty? && f.hourSummary != 'clear' && user.extra.hour_summary != f.hourSummary
-      Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: f.hourSummary}
-      Geoloqi::Session.new(access_token: $geoloqi_app_token).post 'message/send', user_id: user.user_id, text: f.hourSummary
-    end
+      if !f.hourSummary.nil? && !f.hourSummary.empty? && f.hourSummary != 'clear' && user.extra.hour_summary != f.hourSummary
+        Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: f.hourSummary}
+        Geoloqi::Session.new(access_token: $geoloqi_app_token).post 'message/send', user_id: user.user_id, text: f.hourSummary
+      end
+    rescue Geoloqi::ApiError
+      # Don't do anything if there is no recent location from a user
+    end 
   end
 end
 
