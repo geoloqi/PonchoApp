@@ -47,7 +47,8 @@ configure do
     AppConfig = Hashie::Mash.new({
       geoloqi_app_id:     ENV['GEOLOQI_APP_ID'],
       geoloqi_app_secret: ENV['GEOLOQI_APP_SECRET'],
-      darksky_key:        ENV['DARKSKY_KEY']
+      darksky_key:        ENV['DARKSKY_KEY'],
+      ga_id:              ENV['GA_ID']
     })
   end
 
