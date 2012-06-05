@@ -62,7 +62,7 @@ configure do
 
   $geoloqi_app_token = Geoloqi::Session.new.application_access_token
   load_geoloqi_users
-  process_users
+  # process_users
 
   Scheduler = Rufus::Scheduler.start_new
 
