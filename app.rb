@@ -18,6 +18,8 @@ end
 def process_users
   $users.each do |user|
     begin
+      sleep 10
+
       l = Geoloqi::Session.new(access_token: $geoloqi_app_token).get 'location/last', user_id: user.user_id
       f = Hashie::Mash.new darksky_forecast(l.location.position.latitude, l.location.position.longitude)
 
@@ -64,7 +66,7 @@ configure do
 
   Scheduler = Rufus::Scheduler.start_new
 
-  Scheduler.every '5m' do
+  Scheduler.every '10m' do
     load_geoloqi_users
     process_users
   end
