@@ -66,7 +66,7 @@ configure do
 
   Scheduler = Rufus::Scheduler.start_new
 
-  Scheduler.every '10m' do
+  Scheduler.every '15m' do
     load_geoloqi_users
     process_users
   end
