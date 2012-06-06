@@ -1,5 +1,6 @@
 tmp
 build
+build.log
 DinoDeals.sublime-project
 DinoDeals.sublime-workspace
 Resources/config.js
