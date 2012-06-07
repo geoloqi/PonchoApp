@@ -29,7 +29,7 @@ def process_users
 
       if !f.hourSummary.nil? && !f.hourSummary.empty? && f.hourSummary != 'clear' && user.extra.hour_summary != f.hourSummary
         Geoloqi::Session.new.app_post "user/update/#{user.user_id}", extra: {hour_summary: f.hourSummary}
-        Geoloqi::Session.new(access_token: $geoloqi_app_token).post 'message/send', user_id: user.user_id, text: f.hourSummary
+        Geoloqi::Session.new(access_token: $geoloqi_app_token).post 'message/send', user_id: user.user_id, layer_id: AppConfig.geoloqi_layer_id, text: f.hourSummary
       end
     rescue Geoloqi::ApiError
       # Don't do anything if there is no recent location from a user
@@ -53,6 +53,7 @@ configure do
     AppConfig = Hashie::Mash.new({
       geoloqi_app_id:     ENV['GEOLOQI_APP_ID'],
       geoloqi_app_secret: ENV['GEOLOQI_APP_SECRET'],
+      geoloqi_layer_id:   ENV['GEOLOQI_LAYER_ID'],
       darksky_key:        ENV['DARKSKY_KEY'],
       ga_id:              ENV['GA_ID']
     })
