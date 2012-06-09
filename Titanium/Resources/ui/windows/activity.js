@@ -49,7 +49,7 @@ function updateView(data){
 			if(message){
 				
 				var row = Ti.UI.createTableViewRow({
-					hasDetail: true,
+					hasDetail: false,
 					height: 'auto',
 					layout: 'vertical',
 					itemUrl: message.object.sourceURL
@@ -167,14 +167,11 @@ function init(){
 activityWindow.add(activityIndicator);
 
 Ti.API.info("Listen");
+if(!geoloqi.session) {
+	showNoMessages();
+}
 Ti.App.addEventListener("geoloqi:ready", function(e){
-	if(geoloqi.session && geoloqi.session.getAccessToken()){
-		init();
-	} else {
-		Ti.App.addEventListener("geoloqi:ready", function(e){
-			init();
-		});
-	}
+	init();
 });
 
 Ti.App.addEventListener("refreshItems", function(e){

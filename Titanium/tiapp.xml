@@ -8,7 +8,7 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>2.0.1.GA2</sdk-version>
-    <id>com.geoloqi.ponchoapp</id>
+    <id>com.geoloqi.poncho</id>
     <name>Poncho</name>
     <version>1.0.1</version>
     <publisher>Geoloqi, Inc.</publisher>
