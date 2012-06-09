@@ -9,7 +9,7 @@ geoloqi.init({
   clientSecret: Config.clientSecret,
   pushAccount: "geoloqi@gmail.com",
   pushIcon: "push_icon",
-  trackingProfile: "PASSIVE"
+  trackingProfile: "ROUGH"
 },{
   onSuccess: function(){
   	Ti.API.info("Session: "+geoloqi.session);
@@ -75,6 +75,10 @@ Ti.App.addEventListener('openURL', function(e){
 		itemView.open();
 	}
 	itemOpen = true;
+});
+
+Ti.App.addEventListener('openSafari', function(e){
+	Ti.Platform.openURL(e.url);
 });
 
 if(Ti.Platform.osname === "iphone"){

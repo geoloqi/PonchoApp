@@ -216,7 +216,7 @@ if(Ti.Platform.osname === "iphone"){
 		// Enable location
 		menuItem = menu.add({ title: "Enable Location", itemId: OPT_ENABLE });
 		menuItem.addEventListener("click", function(e) {
-			geoloqi.tracker.setProfile("PASSIVE");
+			geoloqi.tracker.setProfile("ROUGH");
 		});
 	};
 	
