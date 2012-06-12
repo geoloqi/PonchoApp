@@ -147,7 +147,7 @@ var PonchoApp = {
   // activity view tab
   PonchoApp.Tabs.activity = Ti.UI.createTab({
     title: 'Weather',
-    icon: (Ti.Platform.osname === "android") ? Ti.App.Android.R.drawable.tabs_categories_drawable : '/images/tabs_umbrella.png',
+    icon: (Ti.Platform.osname === "android") ? Ti.App.Android.R.drawable.tabs_weather_drawable : '/images/tabs_weather.png',
     window: PonchoApp.Windows.activity
   });
   PonchoApp.tabGroup.addTab(PonchoApp.Tabs.activity);
