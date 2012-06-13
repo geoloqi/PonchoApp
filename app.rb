@@ -1,18 +1,11 @@
 require 'yaml'
 require 'bundler/setup'
+require_relative './user'
 Bundler.require
 
-def darksky
-  @darksky ||= Darksky::API.new(AppConfig.darksky_key)
-end
-
-def darksky_forecast(lat, lng)
-  Hashie::Mash.new darksky.brief_forecast lat, lng
-end
-
 def load_geoloqi_users
-  users = Geoloqi::Session.new.app_get('user/list', limit: 0).users
-  Mutex.new.synchronize { $users = users }
+  binding.pry
+  users = User.all
 end
 
 def process_users
@@ -20,7 +13,6 @@ def process_users
     begin
       sleep 10
 
-      l = Geoloqi::Session.new(access_token: $geoloqi_app_token).get 'location/last', user_id: user.user_id
       f = Hashie::Mash.new darksky_forecast(l.location.position.latitude, l.location.position.longitude)
 
       if user.extra.hour_summary.nil?
@@ -33,7 +25,7 @@ def process_users
       end
     rescue Geoloqi::ApiError
       # Don't do anything if there is no recent location from a user
-    end 
+    end
   end
 end
 
@@ -61,7 +53,8 @@ configure do
 
   Geoloqi.config client_id: AppConfig.geoloqi_app_id, client_secret: AppConfig.geoloqi_app_secret, use_hashie_mash: true
 
-  $geoloqi_app_token = Geoloqi::Session.new.application_access_token
+  PonchoSession = Geoloqi::Session.new
+
   load_geoloqi_users
   # process_users
 
