@@ -49,19 +49,18 @@ class User
       
       puts "On user #{@user_id}, we changed to #{f.hour_summary} from #{@current_forecast.hour_summary}, updating.."
       @current_forecast = Hashie::Mash.new(hour_summary: f.hour_summary, check_timeout_time: f.check_timeout_time)
-#  TODO TTURN THIS BACK ON
-#      persist @current_forecast.hour_summary, @current_forecast.check_timeout_time
+      persist @current_forecast.hour_summary, @current_forecast.check_timeout_time
 
-    # We don't really need to report this
-    return true if @current_forecast.hour_summary == 'clear'
+      # We don't really need to report this
+      return true if @current_forecast.hour_summary == 'clear'
 
       s = Geoloqi::Session.new(access_token: PonchoSession.application_access_token)
       puts "SENDING MESSAGE TO #{@user_id}: #{@current_forecast.hour_summary}"
-# TODO TURN THIS BACK ON
-#      s.post 'message/send',
-#             user_id:  @user_id,
-#             layer_id: AppConfig.geoloqi_layer_id,
-#             text:     @current_forecast.hour_summary
+
+      s.post 'message/send',
+             user_id:  @user_id,
+             layer_id: AppConfig.geoloqi_layer_id,
+             text:     @current_forecast.hour_summary
     end
   end
 
