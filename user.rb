@@ -40,7 +40,7 @@ class User
 
   def perform_forecast
     return false if @current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time > Time.now
-    update_location
+    # update_location <- doing this before the throttle to reduce loop wait slowdown
     return if @location.nil?
     f = get_forecast
     return if f.nil?

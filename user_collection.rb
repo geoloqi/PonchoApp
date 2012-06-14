@@ -38,6 +38,17 @@ class UserCollection
     threads = []
 
     @users.each do |user|
+      token = @queue.pop
+
+      threads << Thread.new {
+        user.update_location
+        @queue.push token
+      }
+    end
+    
+    threads.each {|t| t.join}
+
+    @users.each do |user|
       @throttle.register
       token = @queue.pop
 
