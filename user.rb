@@ -23,6 +23,11 @@ class User
     PonchoSession.app_post "user/update/#{@user_id}", extra: extra
   end
 
+  # Could be used to collect users that are expired, currently the ones that don't need to be checked clog up the throttle.
+  def forecast_expired?
+    @location.nil? || @current_forecast.nil? || (!@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time < Time.now)
+  end
+
   def update_location
     begin
       s = Geoloqi::Session.new(access_token: PonchoSession.application_access_token)
