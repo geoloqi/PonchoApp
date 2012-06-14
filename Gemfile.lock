@@ -34,6 +34,8 @@ GEM
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rufus-scheduler (2.0.16)
       tzinfo (>= 0.3.23)
     sinatra (1.3.2)
@@ -58,5 +60,6 @@ DEPENDENCIES
   oj
   pry
   puma
+  rest-client
   rufus-scheduler
   sinatra
