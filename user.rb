@@ -8,7 +8,7 @@ class User
     @user_id = user_id
 
     if hour_summary.nil? && check_timeout_time.nil?
-      @current_forecast = {hour_summary: 'clear', check_timeout_time: 0}
+      @current_forecast = Hashie::Mash.new(hour_summary: 'clear', check_timeout_time: 0)
       persist 'clear', 0
     else
       @current_forecast = Hashie::Mash.new(hour_summary: hour_summary, check_timeout_time: check_timeout_time)
