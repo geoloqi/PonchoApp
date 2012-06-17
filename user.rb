@@ -25,7 +25,7 @@ class User
 
   # Could be used to collect users that are expired, currently the ones that don't need to be checked clog up the throttle.
   def forecast_expired?
-    @location.nil? || @current_forecast.nil? || (!@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time < Time.now)
+    @current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time < Time.now
   end
 
   def update_location
@@ -44,14 +44,13 @@ class User
   end
 
   def perform_forecast
-    return false if @current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time > Time.now
+    return false unless forecast_expired?
     # update_location <- doing this before the throttle to reduce loop wait slowdown
     return if @location.nil?
     f = get_forecast
     return if f.nil?
 
     if !f.hour_summary.nil? && !f.hour_summary.empty? && @current_forecast.hour_summary != f.hour_summary
-      
       puts "On user #{@user_id}, we changed to #{f.hour_summary} from #{@current_forecast.hour_summary}, updating.."
       @current_forecast = Hashie::Mash.new(hour_summary: f.hour_summary, check_timeout_time: f.check_timeout_time)
       persist @current_forecast.hour_summary, @current_forecast.check_timeout_time
@@ -85,7 +84,7 @@ class User
       puts "Got nothing back for #{@user_id}. We'll try again on the next cycle.."
       return
     end
-    
+
     f = MultiJson.decode resp, symbolize_keys: true
 
     Hashie::Mash.new(hour_summary: f[:hourSummary], check_timeout_time: (Time.now + f[:checkTimeout]))
