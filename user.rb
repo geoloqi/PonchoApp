@@ -60,12 +60,12 @@ class User
       return true if @current_forecast.hour_summary == 'clear'
 
       s = Geoloqi::Session.new(access_token: PonchoSession.application_access_token)
-      puts "SENDING MESSAGE TO #{@user_id}: #{@current_forecast.hour_summary}"
+      puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.inspect}: #{@current_forecast.hour_summary}"
 
-      s.post 'message/send',
-             user_id:  @user_id,
-             layer_id: AppConfig.geoloqi_layer_id,
-             text:     @current_forecast.hour_summary
+#      s.post 'message/send',
+#             user_id:  @user_id,
+#             layer_id: AppConfig.geoloqi_layer_id,
+#             text:     @current_forecast.hour_summary
     end
   end
 
