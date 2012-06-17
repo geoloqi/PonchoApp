@@ -44,6 +44,10 @@ class User
   end
 
   def perform_forecast
+    if @user_id == 'FnG'
+      puts "Location for FnG: #{@location.to_hash}"
+    end
+
     return false if @current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time > Time.now
     # update_location <- doing this before the throttle to reduce loop wait slowdown
     return if @location.nil?
