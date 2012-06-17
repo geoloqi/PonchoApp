@@ -44,10 +44,6 @@ class User
   end
 
   def perform_forecast
-    if @user_id == 'FnG'
-      puts "Location for FnG: #{@location.to_hash}"
-    end
-
     return false if @current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time > Time.now
     # update_location <- doing this before the throttle to reduce loop wait slowdown
     return if @location.nil?
@@ -64,12 +60,12 @@ class User
       return true if @current_forecast.hour_summary == 'clear'
 
       s = Geoloqi::Session.new(access_token: PonchoSession.application_access_token)
-      puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.inspect}: #{@current_forecast.hour_summary}"
+      puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.to_hash.inspect}: #{@current_forecast.hour_summary}"
 
-#      s.post 'message/send',
-#             user_id:  @user_id,
-#             layer_id: AppConfig.geoloqi_layer_id,
-#             text:     @current_forecast.hour_summary
+      s.post 'message/send',
+             user_id:  @user_id,
+             layer_id: AppConfig.geoloqi_layer_id,
+             text:     @current_forecast.hour_summary
     end
   end
 
