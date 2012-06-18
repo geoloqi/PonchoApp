@@ -25,8 +25,7 @@ class User
 
   # Could be used to collect users that are expired, currently the ones that don't need to be checked clog up the throttle.
   def forecast_expired?
-    puts "Forecast expired? #{(@current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time < Time.now).to_s}"
-    @current_forecast && !@current_forecast.check_timeout_time.nil? && @current_forecast.check_timeout_time < Time.now
+    @current_forecast.nil? || @current_forecast.check_timeout_time.nil? || @current_forecast.check_timeout_time < Time.now
   end
 
   def update_location
@@ -70,6 +69,7 @@ class User
   end
 
   def get_forecast
+    puts "Getting forecast for #{@user_id}"
     begin
       resp = RestClient.get "https://api.darkskyapp.com/v1/brief_forecast/#{AppConfig.darksky_key}/#{@location.lat},#{@location.lng}"
     rescue RestClient::Gone

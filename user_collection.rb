@@ -38,7 +38,7 @@ class UserCollection
     threads = []
 
     @users.each do |user|
-      next if user.forecast_expired?
+      next unless user.forecast_expired?
       token = @queue.pop
 
       threads << Thread.new {
@@ -50,7 +50,7 @@ class UserCollection
     threads.each {|t| t.join}
 
     @users.each do |user|
-      next if user.forecast_expired?
+      next unless user.forecast_expired?
       @throttle.register
       token = @queue.pop
 
