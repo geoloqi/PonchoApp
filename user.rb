@@ -48,6 +48,7 @@ class User
     # update_location <- doing this before the throttle to reduce loop wait slowdown
     return if @location.nil?
     f = get_forecast
+    @current_forecast.check_timeout_time = f.check_timeout_time
     return if f.nil?
 
     if !f.hour_summary.nil? && !f.hour_summary.empty? && @current_forecast.hour_summary != f.hour_summary
