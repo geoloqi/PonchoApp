@@ -5,6 +5,15 @@ require_relative './user_collection'
 require_relative './throttle'
 Bundler.require
 
+# Don't try this at home, kids
+module Kernel
+  alias_method :puts_original, :puts
+  MUTEX = Mutex.new
+  def puts(text)
+    MUTEX.synchronize { puts_original(text) }
+  end
+end
+
 configure do
   if File.exist?('./config.yml')
     AppConfig = Hashie::Mash.new YAML.load_file('./config.yml')

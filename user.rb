@@ -48,8 +48,8 @@ class User
     # update_location <- doing this before the throttle to reduce loop wait slowdown
     return if @location.nil?
     f = get_forecast
-    @current_forecast.check_timeout_time = f.check_timeout_time
     return if f.nil?
+    @current_forecast.check_timeout_time = f.check_timeout_time
 
     if !f.hour_summary.nil? && !f.hour_summary.empty? && @current_forecast.hour_summary != f.hour_summary
       puts "On user #{@user_id}, we changed to #{f.hour_summary} from #{@current_forecast.hour_summary}, updating.."
@@ -74,7 +74,8 @@ class User
     begin
       resp = RestClient.get "https://api.darkskyapp.com/v1/brief_forecast/#{AppConfig.darksky_key}/#{@location.lat},#{@location.lng}"
     rescue RestClient::Gone
-      puts "User #{@user_id} is not in the forecast area (#{@location.lat}, #{@location.lng})"
+      puts "User #{@user_id} is not in the forecast area (#{@location.lat}, #{@location.lng}), sleeping for 2 hours"
+      @current_forecast.check_timeout_time = Time.now + (3600 * 2)
       return
     rescue RestClient::RequestFailed => e
       if e.message =~ /HTTP status code 429/
