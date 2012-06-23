@@ -57,15 +57,21 @@ class User
       persist @current_forecast.hour_summary, @current_forecast.check_timeout_time
 
       # We don't really need to report this
-      return true if @current_forecast.hour_summary == 'clear'
+      # return true if @current_forecast.hour_summary == 'clear'
+      
 
       s = Geoloqi::Session.new(access_token: PonchoSession.application_access_token)
-      puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.to_hash.inspect}: #{@current_forecast.hour_summary}"
 
-      s.post 'message/send',
-             user_id:  @user_id,
-             layer_id: AppConfig.geoloqi_layer_id,
-             text:     @current_forecast.hour_summary
+      if @current_forecast.hour_summary =~ /possible sprinkling/
+        puts "NOT SENDING MESSAGE for possible sprinkling"
+      else
+        puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.to_hash.inspect}: #{@current_forecast.hour_summary}"
+
+        s.post 'message/send',
+               user_id:  @user_id,
+               layer_id: AppConfig.geoloqi_layer_id,
+               text:     @current_forecast.hour_summary
+      end
     end
   end
 
