@@ -64,6 +64,8 @@ class User
 
       if @current_forecast.hour_summary =~ /possible sprinkling/
         puts "NOT SENDING MESSAGE for possible sprinkling"
+      elsif !(@current_forecast.hour_summary =~ /starting|stopping/i)
+        puts "NOT SENDING MESSAGE for #{@current_forecast.hour_summary}"
       else
         puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.to_hash.inspect}: #{@current_forecast.hour_summary}"
 
