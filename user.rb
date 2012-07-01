@@ -62,9 +62,11 @@ class User
 
       s = Geoloqi::Session.new(access_token: PonchoSession.application_access_token)
 
-      if @current_forecast.hour_summary =~ /possible sprinkling/
-        puts "NOT SENDING MESSAGE for possible sprinkling"
-      elsif !(@current_forecast.hour_summary =~ /starting|stopping/i)
+
+
+      if @current_forecast.hour_summary =~ /sprinkling/
+        puts "NOT SENDING MESSAGE because sprinkling is in it"
+      elsif !(@current_forecast.hour_summary =~ /starting|stopping|for/i)
         puts "NOT SENDING MESSAGE for #{@current_forecast.hour_summary}"
       else
         puts "SENDING MESSAGE TO #{@user_id}, located at #{@location.to_hash.inspect}: #{@current_forecast.hour_summary}"
